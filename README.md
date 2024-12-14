@@ -1,26 +1,26 @@
 # Jalali Date Converter
 
-This tool helps in converting dates between the Gregorian and Jalali calendars. Here is an example of how to use the tool and some of its features.
+This library helps you convert dates between the Gregorian (Miladi) and Jalali (Persian) calendars in PHP. Below are some examples of how to use the library.
 
 ### Example Usage
 
-1. **Setting the Timezone to Tehran**  
-   Set the timezone to Tehran (UTC+3.5).
+1. **Set the Timezone to Tehran**  
+   You can set the timezone to Tehran (UTC+3.5) using the `Timezone` method.
 
 2. **Convert Timestamp to Jalali Date**  
-   Convert a Unix timestamp to a Jalali date.
+   Convert a Unix timestamp to a Jalali date using the `toj` method.
 
 3. **Modify the Jalali Date**  
-   Add hours, days, months, or years to the Jalali date.
+   You can modify a Jalali date by adding hours, days, months, or years using the `addH`, `addD`, `addM`, and `addY` methods.
 
 4. **Format the Date in Persian**  
-   Format the Jalali date in a readable format in Persian.
+   Use the `format` method to display the date in Persian format.
 
 5. **Convert Jalali Date to Timestamp**  
-   Convert a Jalali date string to a Unix timestamp.
+   You can convert a Jalali date string to a Unix timestamp using the `tot` method.
 
-6. **Convert Jalali Date to Gregorian Date**  
-   Convert a Jalali date to the Gregorian calendar.
+6. **Convert Jalali Date to Gregorian**  
+   Use the `miladi` method to convert a Jalali date to its Gregorian counterpart.
 
 ### Code Example
 
@@ -30,7 +30,7 @@ This tool helps in converting dates between the Gregorian and Jalali calendars. 
 time::Timezone(3.5);
 
 // Convert timestamp to Jalali date
-$timestamp = time();
+$timestamp  = time();
 $jalaliDate = time::toj($timestamp);
 echo "Jalali Date: {$jalaliDate}\n";
 
@@ -42,7 +42,7 @@ echo "Modified Jalali Date: {$modifiedDate}\n";
 echo time::format($timestamp, 'l d F Y H:i'); // Display the day, month, and year in Persian
 
 // Convert Jalali date to timestamp
-$jalaliDateInput = '1402/09/24 14:30:00';
+$jalaliDateInput    = '1402/09/24 14:30:00';
 $convertedTimestamp = time::tot($jalaliDateInput);
 echo "Timestamp: $convertedTimestamp\n";
 
