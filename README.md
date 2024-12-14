@@ -2,6 +2,13 @@
 
 This library helps you convert dates between the Gregorian (Miladi) and Jalali (Persian) calendars in PHP. Below are some examples of how to use the library.
 
+### install
+```bash
+composer require natilosir/Jalali
+```
+```bash
+git clone https://github.com/natilosir/Jalali
+```
 ### Example Usage
 
 1. **Set the Timezone to Tehran**  
