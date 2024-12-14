@@ -49,7 +49,7 @@ echo "Modified Jalali Date: {$modifiedDate}\n"; // Modified Jalali Date: 1409/01
 ```
 Format the date in Persian
 ```php
-echo time::format($timestamp, 'l d F Y H:i'); // جمعه 24 آذر 1403 23:24:01
+echo time::format($timestamp, 'W D M Y h:i:s'); // یک‌شنبه بیست‌و‌پنجم آذر 1403 02:23:22
 ```
 Convert Jalali date to timestamp
 ```php
