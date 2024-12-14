@@ -7,7 +7,7 @@ class time
     ];
 
     private static $jalaliDays = [
-        'شنبه', 'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه',
+        'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه',
     ];
 
     private static $timezoneOffset = 0; // جابجایی منطقه زمانی بر حسب ساعت
@@ -23,22 +23,23 @@ class time
     {
         $timestamp += self::$timezoneOffset; // اعمال جابجایی منطقه زمانی
         [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
-        [$jYear, $jMonth, $jDay] = self::gregorianToJalali($gYear, $gMonth, $gDay);
+        [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
         $time                    = date('H:i:s', $timestamp);
 
         return new self(sprintf('%04d/%02d/%02d %s', $jYear, $jMonth, $jDay, $time));
     }
 
     // تابعی برای تبدیل تاریخ جلالی به تایم‌استمپ
-    public static function tot($jalaliDate, $format = 'Y/m/d H:i:s')
+
+    public static function tot($jalaliDate, $hours = null)
     {
         [$datePart, $timePart]   = explode(' ', $jalaliDate) + [1 => '00:00:00'];
         [$jYear, $jMonth, $jDay] = explode('/', $datePart);
-        [$gYear, $gMonth, $gDay] = self::jalaliToGregorian($jYear, $jMonth, $jDay);
+        [$gYear, $gMonth, $gDay] = self::ToGregorian($jYear, $jMonth, $jDay);
         $gregorianDate           = sprintf('%04d-%02d-%02d %s', $gYear, $gMonth, $gDay, $timePart);
         $timestamp               = strtotime($gregorianDate);
 
-        return $timestamp - self::$timezoneOffset; // اعمال جابجایی معکوس منطقه زمانی
+        return ($timestamp - self::$timezoneOffset) + ($hours * 3600); // اعمال جابجایی معکوس منطقه زمانی
     }
 
     private $jalaliDateTime;
@@ -104,7 +105,7 @@ class time
     }
 
     // تابع تبدیل میلادی به جلالی
-    private static function gregorianToJalali($gYear, $gMonth, $gDay)
+    private static function ToJalali($gYear, $gMonth, $gDay)
     {
         $gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         $jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
@@ -150,7 +151,7 @@ class time
     }
 
     // تابع تبدیل جلالی به میلادی
-    private static function jalaliToGregorian($jYear, $jMonth, $jDay)
+    private static function ToGregorian($jYear, $jMonth, $jDay)
     {
         $gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
         $jDaysInMonth = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
@@ -211,15 +212,18 @@ class time
     {
         $timestamp += self::$timezoneOffset; // اعمال جابجایی منطقه زمانی
         [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
-        [$jYear, $jMonth, $jDay] = self::gregorianToJalali($gYear, $gMonth, $gDay);
+        [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
 
         $formattedDate = $format;
         $formattedDate = str_replace('Y', $jYear, $formattedDate);
+        $formattedDate = str_replace('y', substr($jYear, -2), $formattedDate);
         $formattedDate = str_replace('m', sprintf('%02d', $jMonth), $formattedDate);
         $formattedDate = str_replace('d', sprintf('%02d', $jDay), $formattedDate);
         $formattedDate = str_replace('F', self::$jalaliMonths[$jMonth - 1], $formattedDate);
         $formattedDate = str_replace('l', self::$jalaliDays[date('w', $timestamp)], $formattedDate);
-        $formattedDate .= ' '.date('H:i:s', $timestamp);
+        $formattedDate = str_replace('h', sprintf('%02d', date('h', $timestamp)), $formattedDate);
+        $formattedDate = str_replace('i', sprintf('%02d', date('i', $timestamp)), $formattedDate);
+        $formattedDate = str_replace('s', sprintf('%02d', date('s', $timestamp)), $formattedDate);
 
         return $formattedDate;
     }
@@ -232,27 +236,26 @@ class time
         return date('Y-m-d H:i:s', $timestamp);
     }
 }
-
-// مثال استفاده
-// تنظیم منطقه زمانی تهران
+// Example usage
+// Set the timezone to Tehran
 time::Timezone(3.5);
 
-// تبدیل تایم‌استمپ به تاریخ جلالی
+// Convert timestamp to Jalali date
 $timestamp  = time();
 $jalaliDate = time::toj($timestamp);
 echo "Jalali Date: {$jalaliDate}\n";
 
-// اعمال تغییرات بر روی تاریخ جلالی
+// Modify the Jalali date
 $modifiedDate = time::toj($timestamp)->addH(2)->addD(3)->addM(4)->addY(5);
 echo "Modified Jalali Date: {$modifiedDate}\n";
 
-// فرمت‌دهی با متن فارسی
-echo time::format($timestamp, 'l d F Y H:i'); // نمایش روز، ماه و سال به فارسی
+// Format the date in Persian
+echo time::format($timestamp, 'l d F Y h:i:s'); // Display the day, month, and year in Persian
 
-// تبدیل تاریخ جلالی به تایم‌استمپ
-$jalaliDateInput    = '1402/09/24 14:30:00';
+// Convert Jalali date to timestamp
+$jalaliDateInput    = '1402/09/24';
 $convertedTimestamp = time::tot($jalaliDateInput);
-echo "Timestamp: $convertedTimestamp\n";
+echo "\nTimestamp: $convertedTimestamp\n";
 
-// تبدیل تاریخ جلالی به میلادی با استفاده از متد miladi
-echo time::miladi('1401/05/24 14:12:32'); // نمایش میلادی معادل
+// Convert Jalali date to Gregorian using the miladi method
+echo time::miladi('1401/05/24 14:12:32'); // Display the equivalent Gregorian date
