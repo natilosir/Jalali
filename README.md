@@ -33,7 +33,7 @@ git clone https://github.com/natilosir/Jalali
 
 Set the timezone to Tehran
 ```php
-time::Timezone(3.5);
+time::Timezone(3.5); // tehran
 ```
 Convert timestamp to Jalali date
 ```php
