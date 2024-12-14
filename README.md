@@ -6,6 +6,7 @@ This library helps you convert dates between the Gregorian (Miladi) and Jalali (
 ```bash
 composer require natilosir/Jalali
 ```
+Alternatively, you can clone the repository directly:
 ```bash
 git clone https://github.com/natilosir/Jalali
 ```
