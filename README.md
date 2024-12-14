@@ -37,26 +37,26 @@ time::Timezone(3.5);
 ```
 Convert timestamp to Jalali date
 ```php
-$timestamp  = time();
+$timestamp  = time(); 
 $jalaliDate = time::toj($timestamp);
-echo "Jalali Date: {$jalaliDate}\n";
+echo "Jalali Date: {$jalaliDate}\n"; // Jalali Date: 1403/09/24 23:24:01
 ```
 Modify the Jalali date
 ```php
 $modifiedDate = time::toj($timestamp)->addH(2)->addD(3)->addM(4)->addY(5);
-echo "Modified Jalali Date: {$modifiedDate}\n";
+echo "Modified Jalali Date: {$modifiedDate}\n"; // Modified Jalali Date: 1409/01/28 01:24:01
 ```
 Format the date in Persian
 ```php
-echo time::format($timestamp, 'l d F Y H:i'); // Display the day, month, and year in Persian
+echo time::format($timestamp, 'l d F Y H:i'); // جمعه 24 آذر 1403 23:24:01
 ```
 Convert Jalali date to timestamp
 ```php
 $jalaliDateInput    = '1402/09/24 14:30:00';
 $convertedTimestamp = time::tot($jalaliDateInput);
-echo "Timestamp: $convertedTimestamp\n";
+echo "Timestamp: $convertedTimestamp\n"; // Timestamp: 1702638000
 ```
 Convert Jalali date to Gregorian using the miladi method
 ```php
-echo time::miladi('1401/05/24 14:12:32'); // Display the equivalent Gregorian date
+echo time::miladi('1401/05/24 14:12:32'); // 2022-08-15 10:42:32
 ```
