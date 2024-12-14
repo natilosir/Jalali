@@ -10,6 +10,17 @@ class time
         'یک‌شنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه',
     ];
 
+    private static $suffixes = [
+        '1'  => 'یکم', '2' => 'دوم', '3' => 'سوم', '4' => 'چهارم', '5' => 'پنجم',
+        '6'  => 'ششم', '7' => 'هفتم', '8' => 'هشتم', '9' => 'نهم', '10' => 'دهم',
+        '11' => 'یازدهم', '12' => 'دوازدهم', '13' => 'سیزدهم', '14' => 'چهاردهم',
+        '15' => 'پانزدهم', '16' => 'شانزدهم', '17' => 'هفدهم', '18' => 'هجدهم',
+        '19' => 'نوزدهم', '20' => 'بیستم', '21' => 'بیست‌و‌یکم', '22' => 'بیست‌و‌دوم',
+        '23' => 'بیست‌و‌سوم', '24' => 'بیست‌و‌چهارم', '25' => 'بیست‌و‌پنجم',
+        '26' => 'بیست‌و‌ششم', '27' => 'بیست‌و‌هفتم', '28' => 'بیست‌و‌هشتم',
+        '29' => 'بیست‌و‌نهم', '30' => 'سی‌ام', '31' => 'سی‌و‌یکم',
+    ];
+
     private static $timezoneOffset = 0; // جابجایی منطقه زمانی بر حسب ساعت
 
     // تابعی برای تنظیم منطقه زمانی
@@ -30,7 +41,6 @@ class time
     }
 
     // تابعی برای تبدیل تاریخ جلالی به تایم‌استمپ
-
     public static function tot($jalaliDate, $hours = null)
     {
         [$datePart, $timePart]   = explode(' ', $jalaliDate) + [1 => '00:00:00'];
@@ -207,7 +217,6 @@ class time
         return [$gy, $gMonth, $gDay];
     }
 
-    // تابعی برای فرمت‌دهی با متن فارسی
     public static function format($timestamp, $format = 'Y/m/d H:i:s')
     {
         $timestamp += self::$timezoneOffset; // اعمال جابجایی منطقه زمانی
@@ -217,18 +226,18 @@ class time
         $formattedDate = $format;
         $formattedDate = str_replace('Y', $jYear, $formattedDate);
         $formattedDate = str_replace('y', substr($jYear, -2), $formattedDate);
-        $formattedDate = str_replace('m', sprintf('%02d', $jMonth), $formattedDate);
-        $formattedDate = str_replace('d', sprintf('%02d', $jDay), $formattedDate);
-        $formattedDate = str_replace('F', self::$jalaliMonths[$jMonth - 1], $formattedDate);
-        $formattedDate = str_replace('l', self::$jalaliDays[date('w', $timestamp)], $formattedDate);
-        $formattedDate = str_replace('h', sprintf('%02d', date('h', $timestamp)), $formattedDate);
-        $formattedDate = str_replace('i', sprintf('%02d', date('i', $timestamp)), $formattedDate);
-        $formattedDate = str_replace('s', sprintf('%02d', date('s', $timestamp)), $formattedDate);
+        $formattedDate = str_replace('m', $jMonth, $formattedDate);
+        $formattedDate = str_replace('M', self::$jalaliMonths[$jMonth - 1], $formattedDate);
+        $formattedDate = str_replace('d', $jDay, $formattedDate);
+        $formattedDate = str_replace('D', self::$suffixes[$jDay], $formattedDate);
+        $formattedDate = str_replace('W', self::$jalaliDays[date('w', $timestamp)], $formattedDate);
+        $formattedDate = str_replace('h', date('h', $timestamp), $formattedDate);
+        $formattedDate = str_replace('i', date('i', $timestamp), $formattedDate);
+        $formattedDate = str_replace('s', date('s', $timestamp), $formattedDate);
 
         return $formattedDate;
     }
 
-    // تبدیل جلالی به میلادی با فرمت به‌صورت متد نمونه
     public static function miladi($jalaliDateTime)
     {
         $timestamp = self::tot($jalaliDateTime);
@@ -236,11 +245,8 @@ class time
         return date('Y-m-d H:i:s', $timestamp);
     }
 }
-// Example usage
-// Set the timezone to Tehran
 time::Timezone(3.5);
 
-// Convert timestamp to Jalali date
 $timestamp  = time();
 $jalaliDate = time::toj($timestamp);
 echo "Jalali Date: {$jalaliDate}\n";
@@ -250,7 +256,7 @@ $modifiedDate = time::toj($timestamp)->addH(2)->addD(3)->addM(4)->addY(5);
 echo "Modified Jalali Date: {$modifiedDate}\n";
 
 // Format the date in Persian
-echo time::format($timestamp, 'l d F Y h:i:s'); // Display the day, month, and year in Persian
+echo time::format($timestamp, 'W D M Y h:i:s'); // Display the day, month, and year in Persian
 
 // Convert Jalali date to timestamp
 $jalaliDateInput    = '1402/09/24';
