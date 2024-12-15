@@ -92,7 +92,7 @@ time::Timezone(3.5); // tehran
 Convert timestamp to Jalali date
 ```php
 $timestamp  = time(); 
-$jalaliDate = time::toj($timestamp);
+$jalaliDate = time::toj($timestamp, 'W D M Y h:i:s');
 echo "Jalali Date: {$jalaliDate}\n"; // Jalali Date: 1403/09/24 23:24:01
 ```
 Modify the Jalali date
@@ -102,7 +102,7 @@ echo "Modified Jalali Date: {$modifiedDate}\n"; // Modified Jalali Date: 1409/01
 ```
 Format the date in Persian
 ```php
-echo time::format($timestamp, 'W D M Y h:i:s'); // یک‌شنبه بیست‌و‌پنجم آذر 1403 02:23:22
+echo time::format($timestamp, 'W D M Y h:i:s'); // Jalali Date: یک‌شنبه بیست‌و‌پنجم آذر 1403 10:25:46
 ```
 Convert Jalali date to timestamp
 ```php
