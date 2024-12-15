@@ -243,6 +243,7 @@ class time
             'D' => self::$suffixes[$jDay],
             'W' => self::$jalaliDays[date('w', $timestamp)],
             'h' => date('h', $timestamp),
+            'H' => date('H', $timestamp),
             'i' => date('i', $timestamp),
             's' => date('s', $timestamp)
         ]);
