@@ -36,8 +36,8 @@ git clone https://github.com/natilosir/Jalali
 
 | Placeholder | Description                                   | Example         |
 |-------------|-----------------------------------------------|-----------------|
-| `Y`         | Full Jalali year                             | `1403`          |
 | `y`         | Last two digits of the Jalali year            | `03`            |
+| `Y`         | Full Jalali year                             | `1403`          |
 | `m`         | Numeric representation of the Jalali month    | `09`            |
 | `M`         | Name of the Jalali month (in Persian)         | `آذر`           |
 | `d`         | Numeric representation of the Jalali day      | `25`            |
