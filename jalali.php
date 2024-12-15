@@ -21,7 +21,7 @@ class time
         '29' => 'بیست‌و‌نهم', '30' => 'سی‌ام', '31' => 'سی‌و‌یکم',
     ];
 
-    private static $timezoneOffset = 0; // جابجایی منطقه زمانی بر حسب ساعت
+    private static $timezoneOffset = 0;
 
     // تابعی برای تنظیم منطقه زمانی
     public static function Timezone($offset)
@@ -30,16 +30,23 @@ class time
     }
 
     // تابعی برای تبدیل تایم‌استمپ به تاریخ جلالی
-    public static function toj($timestamp)
+    public static function toj($timestamp, $format = null)
     {
-        $timestamp += self::$timezoneOffset; // اعمال جابجایی منطقه زمانی
+        // افزودن جابجایی منطقه زمانی
+        $timestamp += self::$timezoneOffset; 
+
         [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
         [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
         $time                    = date('H:i:s', $timestamp);
 
-        return new self(sprintf('%04d/%02d/%02d %s', $jYear, $jMonth, $jDay, $time));
-    }
+        $jalaliDateTime = sprintf('%04d/%02d/%02d %s', $jYear, $jMonth, $jDay, $time);
 
+        if ($format) {
+            return self::format($timestamp, $format , "yes");
+        }
+
+        return new self($jalaliDateTime);
+    }
     // تابعی برای تبدیل تاریخ جلالی به تایم‌استمپ
     public static function tot($jalaliDate, $hours = null)
     {
@@ -217,26 +224,30 @@ class time
         return [$gy, $gMonth, $gDay];
     }
 
-    public static function format($timestamp, $format = 'Y/m/d H:i:s')
-    {
-        $timestamp += self::$timezoneOffset; // اعمال جابجایی منطقه زمانی
+    public static function format($timestamp, $format = 'Y/m/d H:i:s' , $TimeZone=null) {
+        if(is_float($TimeZone)){
+            $timestamp += 3600 * $TimeZone;
+        }
+        elseif(is_null($TimeZone)){
+            $timestamp += self::$timezoneOffset;
+        }
         [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
         [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
-
-        $formattedDate = $format;
-        $formattedDate = str_replace('Y', $jYear, $formattedDate);
-        $formattedDate = str_replace('y', substr($jYear, -2), $formattedDate);
-        $formattedDate = str_replace('m', $jMonth, $formattedDate);
-        $formattedDate = str_replace('M', self::$jalaliMonths[$jMonth - 1], $formattedDate);
-        $formattedDate = str_replace('d', $jDay, $formattedDate);
-        $formattedDate = str_replace('D', self::$suffixes[$jDay], $formattedDate);
-        $formattedDate = str_replace('W', self::$jalaliDays[date('w', $timestamp)], $formattedDate);
-        $formattedDate = str_replace('h', date('h', $timestamp), $formattedDate);
-        $formattedDate = str_replace('i', date('i', $timestamp), $formattedDate);
-        $formattedDate = str_replace('s', date('s', $timestamp), $formattedDate);
-
-        return $formattedDate;
+    
+        return strtr($format, [
+            'Y' => $jYear,
+            'y' => substr($jYear, -2),
+            'm' => $jMonth,
+            'M' => self::$jalaliMonths[$jMonth - 1],
+            'd' => $jDay,
+            'D' => self::$suffixes[$jDay],
+            'W' => self::$jalaliDays[date('w', $timestamp)],
+            'h' => date('h', $timestamp),
+            'i' => date('i', $timestamp),
+            's' => date('s', $timestamp)
+        ]);
     }
+    
 
     public static function miladi($jalaliDateTime)
     {
@@ -248,15 +259,16 @@ class time
 time::Timezone(3.5);
 
 $timestamp  = time();
-$jalaliDate = time::toj($timestamp);
+$jalaliDate = time::toj($timestamp, 'W D M Y h:i:s');
 echo "Jalali Date: {$jalaliDate}\n";
+
+// Format the date in Persian
+echo time::format($timestamp, 'W D M Y h:i:s', 3.5); // Display the day, month, and year in Persian
 
 // Modify the Jalali date
 $modifiedDate = time::toj($timestamp)->addH(2)->addD(3)->addM(4)->addY(5);
-echo "Modified Jalali Date: {$modifiedDate}\n";
+echo "\nModified Jalali Date: {$modifiedDate}\n";
 
-// Format the date in Persian
-echo time::format($timestamp, 'W D M Y h:i:s'); // Display the day, month, and year in Persian
 
 // Convert Jalali date to timestamp
 $jalaliDateInput    = '1402/09/24';
