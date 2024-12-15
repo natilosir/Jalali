@@ -30,6 +30,59 @@ git clone https://github.com/natilosir/Jalali
 6. **Convert Jalali Date to Gregorian**  
    Use the `miladi` method to convert a Jalali date to its Gregorian counterpart.
 
+
+
+## Supported Placeholders
+
+| Placeholder | Description                                   | Example         |
+|-------------|-----------------------------------------------|-----------------|
+| `Y`         | Full Jalali year                             | `1403`          |
+| `y`         | Last two digits of the Jalali year            | `03`            |
+| `m`         | Numeric representation of the Jalali month    | `09`            |
+| `M`         | Name of the Jalali month (in Persian)         | `آذر`           |
+| `d`         | Numeric representation of the Jalali day      | `25`            |
+| `D`         | Day suffix (in Persian)                      | `بیست‌و‌پنجم`   |
+| `W`         | Day of the week (in Persian)                 | `یک‌شنبه`       |
+| `h`         | Hour in 12-hour format                       | `06`            |
+| `H`         | Hour in 24-hour format                       | `18`            |
+| `i`         | Minutes                                       | `33`            |
+| `s`         | Seconds                                       | `36`            |
+
+---
+
+## Example Usage
+
+```php
+// Set timezone offset (e.g., Iran Standard Time)
+time::Timezone(3.5);
+
+// Define a Gregorian timestamp
+$timestamp = time();
+
+// Format the Jalali date
+$formattedDate = time::format($timestamp, 'W D M Y h:i:s');
+
+// Output: یک‌شنبه بیست‌و‌پنجم آذر 1403 06:33:36
+echo $formattedDate;
+```
+
+## Placeholders in Action
+
+Given:
+- Jalali date: `1403/09/25`
+- Gregorian timestamp: `2024-12-15 06:33:36`
+
+Using the format string `'W D M Y h:i:s'`, the replacements are:
+
+```php
+$timestamp = strtotime('2024-12-15 06:33:36');
+$formattedDate = time::format($timestamp, 'W D M Y h:i:s');
+
+// Output: یک‌شنبه بیست‌و‌پنجم آذر 1403 06:33:36
+echo $formattedDate;
+```
+
+
 ### Code Example
 
 Set the timezone to Tehran
@@ -61,3 +114,4 @@ Convert Jalali date to Gregorian using the miladi method
 ```php
 echo time::miladi('1401/05/24 14:12:32'); // 2022-08-15 10:42:32
 ```
+
