@@ -30,7 +30,7 @@ git clone https://github.com/natilosir/Jalali
 6. **Convert Jalali Date to Gregorian**  
    Use the `miladi` method to convert a Jalali date to its Gregorian counterpart.
 
-
+---
 
 ## Supported Placeholders
 
@@ -65,7 +65,7 @@ $formattedDate = time::format($timestamp, 'W D M Y h:i:s');
 // Output: یک‌شنبه بیست‌و‌پنجم آذر 1403 06:33:36
 echo $formattedDate;
 ```
-
+---
 ## Placeholders in Action
 
 Given:
@@ -81,7 +81,7 @@ $formattedDate = time::format($timestamp, 'W D M Y h:i:s');
 // Output: یک‌شنبه بیست‌و‌پنجم آذر 1403 06:33:36
 echo $formattedDate;
 ```
-
+---
 
 ### Code Example
 
