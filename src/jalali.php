@@ -1,5 +1,5 @@
 <?php
-
+namespace Natilosir\Jalali;
 class time
 {
     private static $jalaliMonths = [
