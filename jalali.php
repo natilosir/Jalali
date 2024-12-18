@@ -1,4 +1,5 @@
 <?php
+namespace Natilosir\Jalali;
 
 class time
 {
