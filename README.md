@@ -97,7 +97,7 @@ time::Timezone(3.5); // tehran
 Convert timestamp to Jalali date
 ```php
 $timestamp  = time(); 
-$jalaliDate = time::toj($timestamp, 'W D M Y h:i:s');
+$jalaliDate = time::toj($timestamp, 'Y/m/d h:i:s');
 echo "Jalali Date: {$jalaliDate}\n"; // Jalali Date: 1403/09/24 23:24:01
 ```
 Modify the Jalali date
