@@ -35,7 +35,7 @@ class time
     public static function toj($timestamp, $format = null)
     {
         // افزودن جابجایی منطقه زمانی
-        $timestamp += self::$timezoneOffset; 
+        $timestamp += self::$timezoneOffset;
 
         [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
         [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
@@ -44,11 +44,12 @@ class time
         $jalaliDateTime = sprintf('%04d/%02d/%02d %s', $jYear, $jMonth, $jDay, $time);
 
         if ($format) {
-            return self::format($timestamp, $format , "yes");
+            return self::format($timestamp, $format, 'yes');
         }
 
         return new self($jalaliDateTime);
     }
+
     // تابعی برای تبدیل تاریخ جلالی به تایم‌استمپ
     public static function tot($jalaliDate, $hours = null)
     {
@@ -226,16 +227,16 @@ class time
         return [$gy, $gMonth, $gDay];
     }
 
-    public static function format($timestamp, $format = 'Y/m/d H:i:s' , $TimeZone=null) {
-        if(is_float($TimeZone)){
+    public static function format($timestamp, $format = 'Y/m/d H:i:s', $TimeZone = null)
+    {
+        if (is_float($TimeZone)) {
             $timestamp += 3600 * $TimeZone;
-        }
-        elseif(is_null($TimeZone)){
+        } elseif (is_null($TimeZone)) {
             $timestamp += self::$timezoneOffset;
         }
         [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
         [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
-    
+
         return strtr($format, [
             'Y' => $jYear,
             'y' => substr($jYear, -2),
@@ -247,10 +248,9 @@ class time
             'h' => date('h', $timestamp),
             'H' => date('H', $timestamp),
             'i' => date('i', $timestamp),
-            's' => date('s', $timestamp)
+            's' => date('s', $timestamp),
         ]);
     }
-    
 
     public static function miladi($jalaliDateTime)
     {
