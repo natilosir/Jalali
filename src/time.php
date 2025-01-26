@@ -37,8 +37,9 @@ class time
         // افزودن جابجایی منطقه زمانی
         $timestamp += self::$timezoneOffset;
 
-        [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
-        [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
+        list($gYear, $gMonth, $gDay) = explode('-', date('Y-m-d', $timestamp));
+        list($jYear, $jMonth, $jDay) = self::ToJalali($gYear, $gMonth, $gDay);
+
         $time                    = date('H:i:s', $timestamp);
 
         $jalaliDateTime = sprintf('%04d/%02d/%02d %s', $jYear, $jMonth, $jDay, $time);
@@ -53,9 +54,9 @@ class time
     // تابعی برای تبدیل تاریخ جلالی به تایم‌استمپ
     public static function tot($jalaliDate, $hours = null)
     {
-        [$datePart, $timePart]   = explode(' ', $jalaliDate) + [1 => '00:00:00'];
-        [$jYear, $jMonth, $jDay] = explode('/', $datePart);
-        [$gYear, $gMonth, $gDay] = self::ToGregorian($jYear, $jMonth, $jDay);
+        list($datePart, $timePar)   = explode(' ', $jalaliDate) + [1 => '00:00:00'];
+        list($jYear, $jMonth, $jDay) = explode('/', $datePart);
+        list($gYear, $gMonth, $gDay) = self::ToGregorian($jYear, $jMonth, $jDay);
         $gregorianDate           = sprintf('%04d-%02d-%02d %s', $gYear, $gMonth, $gDay, $timePart);
         $timestamp               = strtotime($gregorianDate);
 
@@ -89,8 +90,8 @@ class time
 
     public function addM($months)
     {
-        [$datePart, $timePart]   = explode(' ', $this->jalaliDateTime);
-        [$jYear, $jMonth, $jDay] = explode('/', $datePart);
+        list($datePart, $timePart)   = explode(' ', $this->jalaliDateTime);
+        list($jYear, $jMonth, $jDay) = explode('/', $datePart);
         $jMonth += $months;
 
         while ($jMonth > 12) {
@@ -109,8 +110,8 @@ class time
 
     public function addY($years)
     {
-        [$datePart, $timePart]   = explode(' ', $this->jalaliDateTime);
-        [$jYear, $jMonth, $jDay] = explode('/', $datePart);
+        list($datePart, $timePart)   = explode(' ', $this->jalaliDateTime);
+        list($jYear, $jMonth, $jDay) = explode('/', $datePart);
         $jYear += $years;
 
         $this->jalaliDateTime = sprintf('%04d/%02d/%02d %s', $jYear, $jMonth, $jDay, $timePart);
@@ -234,8 +235,8 @@ class time
         } elseif (is_null($TimeZone)) {
             $timestamp += self::$timezoneOffset;
         }
-        [$gYear, $gMonth, $gDay] = explode('-', date('Y-m-d', $timestamp));
-        [$jYear, $jMonth, $jDay] = self::ToJalali($gYear, $gMonth, $gDay);
+        list($gYear, $gMonth, $gDay) = explode('-', date('Y-m-d', $timestamp));
+        list($jYear, $jMonth, $jDay) = self::ToJalali($gYear, $gMonth, $gDay);
 
         return strtr($format, [
             'Y' => $jYear,
