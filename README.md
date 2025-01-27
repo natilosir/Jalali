@@ -13,7 +13,7 @@ git clone https://github.com/natilosir/Jalali
 ##### Use
 ```php
 require __DIR__ . '/vendor/autoload.php';
-use Natilosir\Jalali\Time;
+use natilosir\jalali\time;
 ```
 ### Example Usage
 
