@@ -11,7 +11,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "natilosir\\Jalali\\": "src/"
+      "natilosir\\jalali\\": "src/"
     }
   },
   "require": {}
