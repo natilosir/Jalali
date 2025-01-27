@@ -23,7 +23,7 @@ class time
         '29' => 'بیست‌و‌نهم', '30' => 'سی‌ام', '31' => 'سی‌و‌یکم',
     ];
 
-    private static $timezoneOffset = 0;
+    private static $timezoneOffset = 12600;
 
     // تابعی برای تنظیم منطقه زمانی
     public static function Timezone($offset = 3.5)
