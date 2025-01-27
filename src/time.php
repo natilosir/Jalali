@@ -1,6 +1,6 @@
 <?php
 
-namespace Natilosir\Jalali;
+namespace natilosir\jalali;
 
 class time
 {
@@ -26,7 +26,7 @@ class time
     private static $timezoneOffset = 0;
 
     // تابعی برای تنظیم منطقه زمانی
-    public static function Timezone($offset)
+    public static function Timezone($offset = 3.5)
     {
         self::$timezoneOffset = $offset * 3600; // تبدیل ساعت به ثانیه
     }
