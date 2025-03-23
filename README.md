@@ -66,6 +66,8 @@ $timestamp = time();
 
 // Format the Jalali date
 $formattedDate = time::format($timestamp, 'W D M Y h:i:s');
+// OR
+$formattedDate = time::format('W D M Y h:i:s');
 
 // Output: یک‌شنبه بیست‌و‌پنجم آذر 1403 06:33:36
 echo $formattedDate;
@@ -82,6 +84,8 @@ Using the format string `'W D M Y h:i:s'`, the replacements are:
 ```php
 $timestamp = strtotime('2024-12-15 06:33:36');
 $formattedDate = time::format($timestamp, 'W D M Y h:i:s');
+// OR
+$formattedDate = time::format('W D M Y h:i:s');
 
 // Output: یک‌شنبه بیست‌و‌پنجم آذر 1403 06:33:36
 echo $formattedDate;
@@ -98,6 +102,9 @@ Convert timestamp to Jalali date
 ```php
 $timestamp  = time(); 
 $jalaliDate = time::toj($timestamp, 'Y/m/d h:i:s');
+// OR
+$jalaliDate = time::toj('Y/m/d h:i:s');
+
 echo "Jalali Date: {$jalaliDate}\n"; // Jalali Date: 1403/09/24 23:24:01
 ```
 Modify the Jalali date
