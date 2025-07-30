@@ -23,25 +23,24 @@ class time
         '29' => 'بیست‌و‌نهم', '30' => 'سی‌ام', '31' => 'سی‌و‌یکم',
     ];
 
-    private static $timezoneOffset;
+    private static $timezoneOffset = 0;
 
-    public static function Timezone($offset)
+    // تابعی برای تنظیم منطقه زمانی
+    public static function Timezone($offset = 3.5)
     {
-        self::$timezoneOffset = $offset * 3600; 
+        self::$timezoneOffset = $offset * 3600; // تبدیل ساعت به ثانیه
     }
 
+    // تابعی برای تبدیل تایم‌استمپ به تاریخ جلالی
     public static function toj($timestamp, $format = null)
     {
-        if(is_string($timestamp)){
-            $format = $timestamp;
-            $timestamp = time();
-        }
+        // افزودن جابجایی منطقه زمانی
         $timestamp += self::$timezoneOffset;
 
         list($gYear, $gMonth, $gDay) = explode('-', date('Y-m-d', $timestamp));
         list($jYear, $jMonth, $jDay) = self::ToJalali($gYear, $gMonth, $gDay);
 
-        $time = date('H:i:s', $timestamp);
+        $time                    = date('H:i:s', $timestamp);
 
         $jalaliDateTime = sprintf('%04d/%02d/%02d %s', $jYear, $jMonth, $jDay, $time);
 
@@ -52,6 +51,7 @@ class time
         return new self($jalaliDateTime);
     }
 
+    // تابعی برای تبدیل تاریخ جلالی به تایم‌استمپ
     public static function tot($jalaliDate, $hours = null)
     {
         list($datePart, $timePar)   = explode(' ', $jalaliDate) + [1 => '00:00:00'];
@@ -119,11 +119,13 @@ class time
         return $this;
     }
 
+    // تبدیل تاریخ جلالی به رشته بدون نیاز به متد get
     public function __toString()
     {
         return $this->jalaliDateTime;
     }
 
+    // تابع تبدیل میلادی به جلالی
     private static function ToJalali($gYear, $gMonth, $gDay)
     {
         $gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -169,6 +171,7 @@ class time
         return [$jYear, $jMonth, $jDay];
     }
 
+    // تابع تبدیل جلالی به میلادی
     private static function ToGregorian($jYear, $jMonth, $jDay)
     {
         $gDaysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
@@ -227,27 +230,32 @@ class time
 
     public static function format($timestamp, $format = 'Y/m/d H:i:s', $TimeZone = null)
     {
-        if(is_string($timestamp)){
-            $format = $timestamp;
-            $timestamp = time();
+        if (is_string($timestamp)) {
+            $timestamp = preg_replace(['/\.\d+/', '/Z$/'], '', $timestamp);
+            $timestamp = strtotime($timestamp);
+
+            if ($timestamp === false) {
+                return '';
+            }
         }
-        
+
         if (is_float($TimeZone)) {
             $timestamp += 3600 * $TimeZone;
         } elseif (is_null($TimeZone)) {
             $timestamp += self::$timezoneOffset;
         }
+
         list($gYear, $gMonth, $gDay) = explode('-', date('Y-m-d', $timestamp));
         list($jYear, $jMonth, $jDay) = self::ToJalali($gYear, $gMonth, $gDay);
 
         return strtr($format, [
             'Y' => $jYear,
             'y' => substr($jYear, -2),
-            'm' => $jMonth,
-            'M' => self::$jalaliMonths[$jMonth - 1],
-            'd' => $jDay,
-            'D' => self::$suffixes[$jDay],
-            'W' => self::$jalaliDays[date('w', $timestamp)],
+            'm' => sprintf('%02d', $jMonth), 
+            'M' => self::$jalaliMonths[$jMonth - 1] ?? '',
+            'd' => sprintf('%02d', $jDay),
+            'D' => self::$suffixes[$jDay] ?? $jDay,
+            'W' => self::$jalaliDays[date('w', $timestamp)] ?? '',
             'h' => date('h', $timestamp),
             'H' => date('H', $timestamp),
             'i' => date('i', $timestamp),
